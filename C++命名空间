@@ -1,0 +1,98 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+#include <stdlib.h>
+//关键字。包含c以内的32个关键字  C++兼容 C
+//c++ 绝大多数语法为了弥补C语言中的空白
+
+/*
+//c中命名冲突问题
+//1.自己定义的变量函数 与 库内的定义 冲突
+//2.进入公司项目组以后，做的项目工程较大。多人协作，写的代码命名冲突
+//C语言没有办法很好的解决这个问题  由此引出C++ 中的命名空间
+// ↓
+//命名空间 - namespace
+//定义了一个叫bit的空间 -- 域(相同名字的域会被合并)，必须定义在全局。
+namespace Lsy
+{
+//仍是全局变量，放在静态区
+//可以定义 变量、函数、类型 ， 只是一个空间
+	int rand = 0;	//rand = 10; 不可赋值
+
+	struct MyStruct
+	{
+		int a = 1;
+		int val = 2;
+	};
+
+	int Add(int x, int y)
+	{
+		int sum = x + y;
+		return sum;
+	}
+//可以嵌套定义空间
+	namespace Lsy_1
+	{
+		int SUB(int x, int y)
+		{
+			int sub = x - y;
+			return sub;
+		}
+	}
+}//此时 不会在报错，此 rand 在 bit 的空间内， 
+
+ //编译器寻找一个值  先局部，在全局
+int a = 0;
+void f()
+{
+	//局部域
+}
+
+//第二种使用方式。 将整个命名空间展开
+	//using namespace Lsy;//方便，但是隔离失效，（个人不建议使用）
+	//使用的话，printf("%d\n", rand);将会报错
+
+//第三种方式，部分展开——使用using将命名空间中某个成员引入
+	//用于展开常用的
+using Lsy::MyStruct;
+
+int main()
+{
+	//使用第一种使用方式——加命名空间名称及作用域限定符.可以做到最好的隔离，但是使用不方便
+	Lsy::rand = 10;
+	struct Lsy::MyStruct Mystruct;
+	Lsy::Add(1, 2);
+	Lsy::Lsy_1::SUB(1, 2);
+	//引用第三种方式后
+	struct MyStruct Mystruct_1;
+
+	printf("%d\n", rand);
+	printf("%d\n", Lsy::rand);	//  ：：  此符号为：在左边 bit 这个域内寻找该值
+	int a = 1;
+	printf("%d\n", a);
+	printf("%d\n",::a);//左边为空白， 则在全局内寻找
+}
+*/
+
+
+#include <iostream>
+	//using namespace std;	//C++库函数中的定义都封装在std的空间内，此函数将std内全展开
+//建议使用部分展开 : 常用的展开
+using std::cout;
+using std::endl;
+using std::cin;
+
+//c++的输入输出，<<是流插入运算符，>>是流提取运算符
+int main()
+{
+	cout << "hello world " << endl;	//将cout看作控制台， hello world 流入cout中，在控制台上显示
+	cout << "hello world\n";		//endl 换行    此行代码等价于printf
+	
+//cout 的优点，自动识别类型
+	int i = 10;
+	double d = 1.11;
+	cout << i << " " << d << endl;
+
+	cin >> i >> d;
+	cout << i << " " << d << endl;
+	return 0;
+}
